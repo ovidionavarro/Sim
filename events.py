@@ -67,19 +67,47 @@ def events(servers,time_sim,umbral):
             #agregar a la cola de index_min+1 y su arrive_time 
             servers_queue[index_min +1]+=1
             arrival[index_min+1][arrival_num-sum(servers_queue[:index_min +1])]=time
-            #asignar wait_time en caso de que sea 1
+            #asignar wait_time en caso de cola 1
             if(servers_queue[index_min +1]==1):
                 t_dt=np.random.exponential()
                 waiting_time[index_min+1]=time+t_dt
-        if(arrival_time>time_sim):
-           break
+        
+
+        if(sum(servers_queue)!=0 and min(min_wait,arrival_time)>time_sim ):
+            time=min_wait
+            index_min=waiting_time.index(min_wait)
+            servers_queue[index_min]-=1
+            #verificar cantidad de clientes en cola
+            if(servers_queue[index_min]==0):
+                waiting_time[index_min]=100000
+            else:
+                t_dt=np.random.exponential()
+                waiting_time[index_min]=time+t_dt
+            #verificar si es el ultimo server
+            if(index_min==servers-1):
+                continue
+            #agreagar a la cola de index_min+1 y su arrive_time
+            servers_queue[index_min+1]+=1
+            arrival[index_min+1][arrival_num-sum(servers_queue[:index_min +1])]=time
+            #asignar wait_time en caso de cola=1
+            if(servers_queue[index_min +1]==1):
+                t_dt=np.random.exponential()
+                waiting_time[index_min+1]=time+t_dt
+        #caso donde se pase del tiempo y no existan client en el sistema
+        if(sum(servers_queue)==0 and min(min_wait,arrival_time)>time_sim ):
+            break
+        
+    
+    
+    
     return arrival    
 
         
-arrival=events(2,6,9)
+arrival=events(3,6,9)
 print("arrival")
 print(arrival[0])
 print(arrival[1])
+print(arrival[2])
 
 
 
