@@ -58,6 +58,7 @@ def events(servers,time_sim,umbral):
             time=min_wait
             index_min=waiting_time.index(min_wait)#server con menor wait_time
             client=client_queue[index_min].get()#quitar elemento de la cola
+            prob=np.random.uniform()
 
             #verificar cantidad de clientes en cola
             if (client_queue[index_min].empty()):
@@ -70,20 +71,31 @@ def events(servers,time_sim,umbral):
             if(index_min==servers-1): 
                 client_out+=1
                 continue
- 
-            client_queue[index_min+1].put(client) #agregar a la cola de index_min+1 y su arrive_time 
-            arrival[index_min+1][client]=time
             
-            if(client_queue[index_min +1].qsize()==1):#asignar wait_time en caso de cola 1
-                t_dt=np.random.exponential()
-                waiting_time[index_min+1]=time+t_dt
-        
+            if(prob>umbral):
+                random=np.random.uniform(0,servers)
+                print("ee")
+                server_random=int(random)
+                client_queue[server_random].put(client)#agregar cliente a la cola de index_min y su arrive_time
+                arrival[server_random][client]=time
+                if(client_queue[server_random].qsize()==1):#asignar wait_time en caso de cola 1
+                    t_dt=np.random.exponential()
+                    waiting_time[server_random]=time+t_dt
+                
+            else:
+                client_queue[index_min+1].put(client) #agregar a la cola de index_min+1 y su arrive_time 
+                arrival[index_min+1][client]=time
+
+                if(client_queue[index_min +1].qsize()==1):#asignar wait_time en caso de cola 1
+                    t_dt=np.random.exponential()
+                    waiting_time[index_min+1]=time+t_dt
+            
         
         if(arrival_num-client_out!=0 and min(min_wait,arrival_time)>time_sim ):
             time=min_wait
             index_min=waiting_time.index(min_wait)
             client=client_queue[index_min].get(arrival_num)#agregar clientes a cola del servidor 0
-            
+            prob=np.random.uniform()
             #verificar cantidad de clientes en cola
             if(client_queue[index_min].empty()):
                 waiting_time[index_min]=100000
@@ -96,12 +108,24 @@ def events(servers,time_sim,umbral):
                 client_out+=1
                 continue
 
-            client_queue[index_min+1].put(client)#agregar a la cola de index_min+1 y su arrive_time
-            arrival[index_min+1][client]=time
-            
-            if(client_queue[index_min +1].qsize()==1):#asignar wait_time en caso de cola=1
-                t_dt=np.random.exponential()
-                waiting_time[index_min+1]=time+t_dt
+            if(prob>umbral):
+                random=np.random.uniform(0,servers)
+                print("ee")
+                server_random=int(random)
+                client_queue[server_random].put(client)#agregar cliente a la cola de index_min y su arrive_time
+                arrival[server_random][client]=time
+                if(client_queue[server_random].qsize()==1):#asignar wait_time en caso de cola 1
+                    t_dt=np.random.exponential()
+                    waiting_time[server_random]=time+t_dt
+                
+            else:
+                client_queue[index_min+1].put(client) #agregar a la cola de index_min+1 y su arrive_time 
+                arrival[index_min+1][client]=time
+
+                if(client_queue[index_min +1].qsize()==1):#asignar wait_time en caso de cola 1
+                    t_dt=np.random.exponential()
+                    waiting_time[index_min+1]=time+t_dt
+                
         #caso donde se pase del tiempo y no existan client en el sistema
         if(arrival_num-client_out==0 and min(min_wait,arrival_time)>time_sim ):
             break
@@ -109,7 +133,7 @@ def events(servers,time_sim,umbral):
     return arrival,client_out,client_queue  
 
         
-arrival,client_out,client_queue=events(3,6,9)
+arrival,client_out,client_queue=events(3,6,0.3)
 #a=client_queue[0]
 #while not a.empty():
 #    elemento = a.get()
