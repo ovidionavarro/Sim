@@ -1,1 +1,18 @@
 los clientes arriban en correspondencia de un proceso de pioson no homogeneo
+lista de arribos de todos los servers 'LA'
+tiempo extra 'TE' DONE
+clientes arribados # 'CA' *** DONE
+saltos fff 'SF' *** DONE
+saltos bbb 'SB' *** DONE
+server con mas saltos ejecutados/recibidos 'MJE'/'MJR'
+saltos x clientes 'CxJ'
+*** promedio de clientes en el tiempo
+
+
+asdnakjsn,dasdasd,dasassd,asda,s,da,sd,asda
+
+asdaa
+saltos
+asdada
+saltosda
+s

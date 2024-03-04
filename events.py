@@ -28,8 +28,9 @@ def events(servers,time_sim,umbral):
     arrival=[]#diccionario con arribo de los clientes por server 
     waiting_time=[]#tiempo de espera de cada servidor con cliente actual 
     client_queue=[]#clientes en cola de cada servidor
+    client_jump=[]
 
-    client_out=time=extra_time=arrival_num=0
+    client_out=time=extra_time=arrival_num=foward_jump=back_jump=0
     arrival_time=0  
     for i in range(servers):
         arrival.append({})
@@ -46,6 +47,7 @@ def events(servers,time_sim,umbral):
         #arrival_event
         if(arrival_time<min_wait and arrival_time<time_sim):
             time=arrival_time
+            client_jump.append(0)
             arrival_num+=1
             arrival[0][arrival_num]=time
             client_queue[0].put(arrival_num)#agregar clientes a cola del servidor 0
@@ -70,12 +72,19 @@ def events(servers,time_sim,umbral):
             #verificar si es el ultimo server
             if(index_min==servers-1): 
                 client_out+=1
+                extra_time=time
+
                 continue
             
             if(prob>umbral):
                 random=np.random.uniform(0,servers)
-                print("ee")
                 server_random=int(random)
+                client_jump[client-1]+=1
+                if (server_random<index_min):
+                    back_jump+=1
+                else:
+                    foward_jump+=1
+                
                 client_queue[server_random].put(client)#agregar cliente a la cola de index_min y su arrive_time
                 arrival[server_random][client]=time
                 if(client_queue[server_random].qsize()==1):#asignar wait_time en caso de cola 1
@@ -106,12 +115,19 @@ def events(servers,time_sim,umbral):
             #verificar si es el ultimo server
             if(index_min==servers-1):
                 client_out+=1
+                extra_time=time
                 continue
 
             if(prob>umbral):
                 random=np.random.uniform(0,servers)
-                print("ee")
                 server_random=int(random)
+                client_jump[client-1]+=1
+
+                if (server_random<index_min):
+                    back_jump+=1
+                else:
+                    foward_jump+=1
+
                 client_queue[server_random].put(client)#agregar cliente a la cola de index_min y su arrive_time
                 arrival[server_random][client]=time
                 if(client_queue[server_random].qsize()==1):#asignar wait_time en caso de cola 1
@@ -130,20 +146,23 @@ def events(servers,time_sim,umbral):
         if(arrival_num-client_out==0 and min(min_wait,arrival_time)>time_sim ):
             break
         
-    return arrival,client_out,client_queue  
+    return arrival,client_out,client_queue,foward_jump,back_jump,extra_time,client_jump 
 
         
-arrival,client_out,client_queue=events(3,6,0.3)
+arrival,client_out,client_queue, fj, bj,extra_time,cj=events(5,6,0.5)
 #a=client_queue[0]
 #while not a.empty():
 #    elemento = a.get()
 #    print(elemento)
 #print(exit_time)
-print("arrival")
-print(arrival[0])
-print(arrival[1])
-print(arrival[2])
-
+# print("arrival")
+# print(arrival[0])
+# print(arrival[1])
+print(arrival[4])
+print(f'foward jum {fj}, back jump {bj}')
+print(f'Clientes totales {client_out}')
+print(extra_time)
+print(cj)
 
 
 #mi_cola = Queue()
