@@ -149,7 +149,7 @@ def events(servers, time_sim, umbral):
     return arrival, client_out, client_queue, foward_jump, back_jump, extra_time, client_jump, client_in_time
 
 
-# arrival, client_out, client_queue, FJ, BJ, ET, CxJ, client_in_time = events(5, 6, 0.5)
+arrival, client_out, client_queue, FJ, BJ, ET, CxJ, client_in_time = events(5, 6, 0.5)
 
 # # print(f'foward jum {fj}, back jump {bj}')
 # print(f'Clientes totales {client_out}')
