@@ -2,12 +2,9 @@ import csv
 import events as e
 
 
-
-
-
 def generate(row):
-# Encabezado del CSV
-    HEADER = ["CA", "CxJ", "FJ", "BJ", "ET", "SLT", "SRVs"]
+    # Encabezado del CSV
+    HEADER = ['#SRVs', 'TIME', 'THRH', "CL", "CxJ", "FJ", "BJ", "ET", "SRVs_STATUS"]
 
     # Ruta del archivo CSV
     ruta_archivo_csv = 'data.csv'
@@ -24,4 +21,3 @@ def generate(row):
         # Escribir los nuevos datos en el archivo CSV
         for fila in row:
             escritor_csv.writerow(fila)
-

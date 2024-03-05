@@ -1,8 +1,7 @@
 import numpy as np
 from queue import Queue
 
-
-# generer variable aleatoria para el arribo de los clientes
+# generar variable aleatoria para el arribo de los clientes
 def generawaiting_timete_poison(param):
     aux = np.random.poisson(param)
     print("1:", aux)
@@ -153,5 +152,5 @@ arrival, client_out, client_queue, FJ, BJ, ET, CxJ, client_in_time = events(5, 6
 
 # # print(f'foward jum {fj}, back jump {bj}')
 # print(f'Clientes totales {client_out}')
-# # print(extra_time)
+# print(extra_time)
 # print(client_in_time)

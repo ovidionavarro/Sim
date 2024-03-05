@@ -15,10 +15,10 @@ def start():
             for i in range(tests):
                 SRVs, CA, client_queue, FJ, BJ, ET, CxJ, client_in_time = e.events(int(servers), float(time),
                                                                                    float(umbral))
-                g.generate([[CA, CxJ, FJ, BJ, ET, float(time), SRVs]])
+                g.generate([[servers, time, umbral, CA, CxJ, FJ, BJ, ET - time, SRVs]])
         else:
             SRVs, CA, client_queue, FJ, BJ, ET, CxJ, client_in_time = e.events(int(servers), float(time), float(umbral))
-            g.generate([[CA, CxJ, FJ, BJ, ET, float(time), SRVs]])
+            g.generate([[servers, time, umbral, CA, CxJ, FJ, BJ, ET - time, SRVs]])
 
         messagebox.showinfo("Successful", "Simulation ended You can check on data.csv ")
 
